@@ -1,4 +1,5 @@
 const mongooes = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongooes.Schema({
     firstName: {
@@ -67,6 +68,11 @@ const userSchema = new mongooes.Schema({
     }, 
 },{
     timestamps      : true
+})
+
+userSchema.pre('save', async function(next) {
+    const salt = bcrypt.genSaltSync(10);
+    this.password = await bcrypt.hash(this.password, salt);
 })
 
 module.exports = mongooes.model("User", userSchema)
