@@ -1,7 +1,7 @@
 const Product = require('../models/product.model');
 
 const createProduct = async(req,res) => {
- 
+ console.log('hello ')
 }
 
 const get = async(req,res) => {
