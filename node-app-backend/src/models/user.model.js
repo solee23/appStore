@@ -62,10 +62,6 @@ const userSchema = new mongooes.Schema({
     passwordResetExpires: {
         type        : String
     },
-    createAt: {
-        type        : Date,
-        default     : Date.now()
-    }, 
 },{
     timestamps      : true
 })
@@ -74,5 +70,9 @@ userSchema.pre('save', async function(next) {
     const salt = bcrypt.genSaltSync(10);
     this.password = await bcrypt.hash(this.password, salt);
 })
+
+userSchema.methods.comparePassword = async function(password){
+    return await bcrypt.compare(password,this.password);
+}
 
 module.exports = mongooes.model("User", userSchema)
