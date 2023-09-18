@@ -1,9 +1,12 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const router = require('./src/routes/index');
-const error = require('./src/middlewares/error')
+const error = require('./src/middlewares/error');
+const cookieParser = require('cookie-parser');
 
 const app = express();
+
+app.use(cookieParser());
 
 dotenv.config();
 
