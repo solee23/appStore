@@ -1,30 +1,33 @@
 const User = require('../models/user.model');
-const catchAsynError = require('../middlewares/catchAsynError');
-const ErrorHandle = require('../utils/errorHandle');
+const asyncHandler = require('express-async-handler');
 const { createToken, createRefreshToken } = require('../middlewares/jsonwebtoken');
 
 
-const register = catchAsynError(async (req, res, next) => {
+const register = asyncHandler(async (req, res, next) => {
     const { firstName, lastName, email, password, avt } = req.body;
     if (!firstName || !lastName || !email || !password) {
-        return next(new ErrorHandle('Vui lòng nhập đầy đủ hông tin...', 400));
+        return res.status(400).json({
+            sucess: false,
+            mes: 'Missing inputs'
+        })
     }
     const user = await User.findOne({ email })
-    if (user) {
-        return next(new ErrorHandle('Email đã tồn tại...', 404));
-    }
+    if (user) throw new Error('User has existed');
     const newUser = await User.create(req.body);
-    res.status(200).json({
-        message: 'Tạo thành công... Bạn có muỗn đăng nhập ?',
-        data: newUser
-    });
+    return res.status(200).json({
+        sucess: newUser ? true : false,
+        mes: newUser ? 'Register is successfully. Please go login~' : 'Something went wrong'
+    })
 
 });
 
-const login = catchAsynError(async (req, res, next) => {
+const login = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
-        return next(new ErrorHandle('Vui lòng nhập đầy đủ hông tin...', 400));
+        return res.status(400).json({
+            sucess: false,
+            mes: 'Missing inputs'
+        })
     }
     const user = await User.findOne({ email });
     if (user && await user.comparePassword(password)) {
@@ -37,24 +40,25 @@ const login = catchAsynError(async (req, res, next) => {
             message: 'Đăng nhập thành công...',
             resData,
             token
-        })
-    }
-    return next(new ErrorHandle('Sai tài khoản hoặc mật khẩu...', 404));
+        });
+    }else {
+        throw new Error('Invalid credentials!')
+    };
 });
 
-const getAll = catchAsynError(async (req, res) => {
-    const users = await User.find();
-    if (users) {
+const getOne = asyncHandler(async (req, res) => {
+    const {_id} = req.user;
+    const user = await User.findById(_id);
+    if (user) {
         res.status(200).json({
             message: 'Danh sách tất cả người dùng...',
-            data: users
+            data: user
         });
     }
-    return next(new ErrorHandle('Không tìm thấy danh sách...', 404));
 });
 
 module.exports = {
     register,
     login,
-    getAll
+    getOne
 }
