@@ -1,6 +1,8 @@
 const User = require('../models/user.model');
 const asyncHandler = require('express-async-handler');
 const { createToken, createRefreshToken } = require('../middlewares/jsonwebtoken');
+const jwt = require('jsonwebtoken');
+
 
 
 const register = asyncHandler(async (req, res, next) => {
@@ -8,15 +10,15 @@ const register = asyncHandler(async (req, res, next) => {
     if (!firstName || !lastName || !email || !password) {
         return res.status(400).json({
             sucess: false,
-            mes: 'Missing inputs'
+            mes: 'Vui lòng nhập đầy đủ thông tin...'
         })
     }
     const user = await User.findOne({ email })
-    if (user) throw new Error('User has existed');
+    if (user) throw new Error('Email đã tồn tại...');
     const newUser = await User.create(req.body);
     return res.status(200).json({
         sucess: newUser ? true : false,
-        mes: newUser ? 'Register is successfully. Please go login~' : 'Something went wrong'
+        mes: newUser ? 'Đăng ký thành công. Vui lòng đăng nhập...' : 'Đăng ký thất bại...'
     })
 
 });
@@ -26,7 +28,7 @@ const login = asyncHandler(async (req, res, next) => {
     if (!email || !password) {
         return res.status(400).json({
             sucess: false,
-            mes: 'Missing inputs'
+            mes: 'Vui lòng nhập đầy đủ thông tin...'
         })
     }
     const user = await User.findOne({ email });
@@ -34,31 +36,59 @@ const login = asyncHandler(async (req, res, next) => {
         const { password, role, ...resData } = user.toObject();
         const token = createToken(user._id, role);
         const refresh = createRefreshToken(user._id);
-        await User.findByIdAndUpdate(user._id,  {refreshToken :refresh} );
+        await User.findByIdAndUpdate(user._id, { refreshToken: refresh });
         res.cookie('refreshToken', refresh, { httpOnly: true, age: 1 * 60 * 60 })
         res.status(200).json({
             message: 'Đăng nhập thành công...',
             resData,
             token
         });
-    }else {
-        throw new Error('Invalid credentials!')
+    } else {
+        throw new Error('Thông tin không hợp lệ...!')
     };
 });
 
 const getOne = asyncHandler(async (req, res) => {
-    const {_id} = req.user;
-    const user = await User.findById(_id);
+    const { _id } = req.user;
+    const user = await User.findById(_id).select('-refreshToken -password -role');
     if (user) {
         res.status(200).json({
-            message: 'Danh sách tất cả người dùng...',
+            message: 'Thông tin của người dùng...',
             data: user
         });
     }
 });
 
+const refreshAccesstoken = asyncHandler(async (req, res) => {
+    const cookie = req.cookies;
+    if (!cookie && !cookie.refreshAccesstoken) throw Error('Không có refeshtoken');
+    const rs = jwt.verify(cookie.refreshToken, process.env.JWT_SECRET);
+    const response = await User.findOne({ _id: rs._id, refreshToken: cookie.refreshToken });
+    return res.status(200).json({
+        sucess: response ? true : false,
+        newAccesstoken: response ? createToken(response._id, response.role) : 'Không tìm thấy refresh token...'
+    })
+
+});
+
+const logout = asyncHandler(async(req,res) => {
+    const cookie = req.cookies;
+    if (!cookie && !cookie.refreshAccesstoken) throw Error('Không có refeshtoken');
+    await User.findOneAndUpdate({refreshToken: cookie.refreshToken}, {refreshToken: ''}, {new: true});
+    res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: true
+    });
+    return res.status(200).json({
+        sucess: true,
+        message: 'Đăng xuất thành công...'
+    })
+})
+
 module.exports = {
     register,
     login,
-    getOne
+    getOne,
+    refreshAccesstoken,
+    logout
 }

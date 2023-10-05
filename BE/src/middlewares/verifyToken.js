@@ -7,7 +7,7 @@ const verifyAccessToken = asyncHandler(async (req, res, next) => {
         jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
             if (err) return res.status(401).json({
                 success: false,
-                mes: 'Invalid access token'
+                mes: 'Token không hợp lệ...'
             })
             req.user = decode
             next()
@@ -15,7 +15,7 @@ const verifyAccessToken = asyncHandler(async (req, res, next) => {
     } else {
         return res.status(401).json({
             success: false,
-            mes: 'Require authentication!!!'
+            mes: 'Vui lòng đăng nhập...'
         })
     }
 })
