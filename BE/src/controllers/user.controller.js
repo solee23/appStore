@@ -2,10 +2,11 @@ const User = require('../models/user.model');
 const asyncHandler = require('express-async-handler');
 const { createToken, createRefreshToken } = require('../middlewares/jsonwebtoken');
 const jwt = require('jsonwebtoken');
+const sendMail = require('../utils/sendEmail');
 
 
 
-const register = asyncHandler(async (req, res, next) => {
+const register = asyncHandler(async (req, res) => {
     const { firstName, lastName, email, password, avt } = req.body;
     if (!firstName || !lastName || !email || !password) {
         return res.status(400).json({
@@ -85,10 +86,33 @@ const logout = asyncHandler(async(req,res) => {
     })
 })
 
+const forgotPassword = asyncHandler( async(req,res) => {
+    const email = req.query;
+    if(!email) throw Error('Không tìm thấy email...');
+    const user = await User.findOne({ email});
+    if(!user) throw Error('Không tìm thấy người dùng...');
+    const resetToken = user.createPasswordChange();
+    await user.save();
+
+    const html = `<a href=${process.env.URL_SERVER}/api/user/reset-password/${resetToken}>Link sẽ hết hạn trong 15p đó nhé....</a>`;
+
+    const data = {
+        to: email,
+        html 
+    };
+    const rs = await sendMail(data);
+    res.status(200).json({
+        sucess: true,
+        rs
+    })
+
+})
+
 module.exports = {
     register,
     login,
     getOne,
     refreshAccesstoken,
-    logout
+    logout,
+    forgotPassword
 }

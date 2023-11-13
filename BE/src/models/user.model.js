@@ -1,5 +1,6 @@
 const mongooes = require('mongoose');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const userSchema = new mongooes.Schema({
     firstName: {
@@ -18,10 +19,6 @@ const userSchema = new mongooes.Schema({
     password: {
         type        : String,
         required    : true,
-    },
-    mobile: {
-        type        : String,
-        unique      : true
     },
     avt: {
         type        : String,
@@ -71,8 +68,16 @@ userSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, salt);
 })
 
-userSchema.methods.comparePassword = async function(password){
-    return await bcrypt.compare(password,this.password);
+userSchema.methods = {
+    comparePassword: async function(password) {
+        return await bcrypt.compare(password,this.password);
+    },
+    createPasswordChange: function(){
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        this.passwordResetToken = crypto.createHash('sh256').update(resetToken).digest('hex');
+        this.passwordResetExpires = Date.now() + 15 *60 *1000;
+        return resetToken;
+    }
 }
 
 module.exports = mongooes.model("User", userSchema)
