@@ -4,11 +4,11 @@ import { Sidebar, Banner } from '../../components';
 const Home = () => {
   return (
     <div className="w-main flex">
-      <div className="flex flex-col flex-auto gap-5 w-[30%] border">
+      <div className="flex flex-col flex-auto gap-5 w-[25%] border">
         <Sidebar/>
         <span> Deal daily</span>
       </div>
-      <div className="flex flex-col flex-auto gap-5 w-[70%] pl-5 border">
+      <div className="flex flex-col flex-auto gap-5 w-[75%] pl-5 border">
         <Banner/>
         <span> Best seller</span>
       </div>
