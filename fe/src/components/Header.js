@@ -1,10 +1,15 @@
 import React from 'react';
 import icons from '../utils/icon';
 import { Link } from 'react-router-dom';
-import path from '../utils/path'
+import path from '../utils/path';
+import { useAppStore } from '../store/useAppStore';
+import { useUserStore } from '../store/useUserStore';
+import { Login } from '.';
 
 const Header = () => {
   const { BsFillTelephoneInboundFill, MdEmail,BsFillBagCheckFill, RiAccountCircleFill } = icons
+  const {token} = useUserStore();
+  const {setModal} = useAppStore();
 
   return (
     <div className="border flex justify-between w-main h-[110px] py-[35px]">
@@ -30,8 +35,8 @@ const Header = () => {
             <BsFillBagCheckFill color="red" size={26}/>
             <span>0 items</span>
         </div>
-        <div className="flex items-center justify-center gap-2 px-6">
-              <RiAccountCircleFill color="red" size={26}/>
+        <div className="flex items-center justify-center gap-2 px-6" onClick={() => setModal(true, <Login/>)}>
+            {!token && (<RiAccountCircleFill color="red" size={26}/>)}
         </div>
       </div>
     </div>
