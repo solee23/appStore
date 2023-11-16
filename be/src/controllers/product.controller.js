@@ -1,5 +1,6 @@
 const Product = require('../models/product.model');
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
+require('dotenv').config()
 // const slugify = require('slugify')
 
 const createProduct = asyncHandler(async (req, res) => {
@@ -20,23 +21,27 @@ const get = async (req, res) => {
 
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    let result = JSON.parse(queryStr);
 
-    // if (req.query.sort) {
-    //     // if there is multiple sort option, replace (,)comma with space
-    //     const sortBy = req.query.sort.split(',').join(' ');
-    //     this.query = this.query.sort(sortBy);
-    //   } else {
-    //     this.query = this.query.sort('-createdAt');
-    //   }
-    //   if (req.query.sort) {
-    //     const fields = req.query.sort.fields.split(',').join(' ');
-    //     this.query = this.query.select(fields);
-    //   } else {
-    //     //remove default __v fields from result
-    //     this.query = this.query.select('-__v');
-    //   }
+    let queryCommand = Product.find(result)
 
-    const allProduct = await Product.find(JSON.parse(queryStr));
+    if (req.query.sort) {
+        const sortBy = req.query.sort.split(',').join(' ');
+        queryCommand = queryCommand.sort(sortBy);
+    }
+    if (req.query.fields) {
+        const fields = req.query.fields.split(',').join(' ');
+        queryCommand = queryCommand.select(fields);
+    }
+
+    const page = +req.query.page || 1;
+    const limit = +req.query.limit || process.env.LITMIT_PRODUCTS;
+    const skip = (page - 1) * limit;
+
+    queryCommand.skip(skip).limit(limit);
+
+
+    const allProduct = await Product.find(queryCommand);
     if (allProduct.length === 0) return res.status(400).json({
         sucess: false,
         message: 'Không có sản phẩm nào'
@@ -88,38 +93,36 @@ const deleteProduct = async (req, res) => {
     })
 }
 
-// const getUserProduct = async(req,res) => {
-//     const data = await Product.aggregate([
-//         {
-//             $lookup: {
-//                 from: "users",
-//                 localField: "user",
-//                 foreignField: "_id",
-//                 as: "user"
-//             }
-//         },
-//         {
-//             $project: {
-//                 name: 1,
-//                 avt: 1,
-//                 user: {
-//                     lastName: 1,
-//                     email: 1
-//                 }
-//             }
-//         }
-//     ])
-//     res.status(200).json({
-//         message: "Detail Product of User",
-//         data: data,
-//     })
-// }
+const ratings = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { star, comment, pid } = req.body;
+    if (!star || !pid) throw new Error('Vui lòng nhập đầy đủ thông tin');
+    const ratingProduct = await Product.findById(pid);
+    const alreadyRating = ratingProduct?.ratings?.some(el => el.postedBy.toString() === _id);
+    if (alreadyRating) {
+        await Product.updateOne({
+            ratings: { $elemMatch: alreadyRating}
+        },{
+            $set: {"ratings.$.star": star, "ratings.$.comment": comment}
+        }, { new: true })
+    }else{
+        const respone = await Product.findByIdAndUpdate(pid, {
+            $push: { ratings: { star, comment, postedBy: _id } }
+        }, { new: true })
+        console.log(respone);
+    }
+    return res.status(200).json({
+        sucess: true,
+
+    })
+})
+
 
 module.exports = {
     createProduct,
     get,
     getById,
     updateById,
-    deleteProduct
-    // getUserProduct
+    deleteProduct,
+    ratings
 }
