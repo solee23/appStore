@@ -17,7 +17,7 @@ const get = async(req,res) => {
     const allProduct = await Product.find();
     if(allProduct.length === 0) return res.status(400).json({
         sucess: false,
-        mes: 'Không có sản phẩm nào'
+        message: 'Không có sản phẩm nào'
     })
     return res.status(200).json({
         sucess: true,
@@ -30,7 +30,7 @@ const getById = async(req, res) => {
     const product = await Product.findById(pid);
     if(!product) return res.status(400).json({
         sucess: false,
-        mes: 'Không tìm thấy sản phẩm'
+        message: 'Không tìm thấy sản phẩm'
     })
     return res.status(200).json({
         sucess: true,
@@ -43,7 +43,7 @@ const updateById = async(req, res) => {
     const product = await Product.findById(pid);
     if(!product) return res.status(400).json({
         sucess: false,
-        mes: 'Không tìm thấy sản phẩm'
+        message: 'Không tìm thấy sản phẩm'
     })
     const update = await Product.findByIdAndUpdate(pid, req.body, {new: true})   
     return res.status(200).json({
@@ -58,11 +58,11 @@ const updateById = async(req, res) => {
     const product = await Product.findByIdAndDelete(pid);
     if(!product) return res.status(400).json({
         sucess: false,
-        mes: 'Không tìm thấy sản phẩm'
+        message: 'Không tìm thấy sản phẩm'
     })
     return res.status(200).json({
         sucess: true,
-        mes: 'Xóa sản phẩm thành công'
+        message: 'Xóa sản phẩm thành công'
     })
  }
 

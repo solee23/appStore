@@ -45,7 +45,9 @@ const login = asyncHandler(async (req, res, next) => {
             token
         });
     } else {
-        throw new Error('Thông tin không hợp lệ...!')
+        return res.status(404).json({
+            message: 'Sai tài khoản hoặc mật khẩu...',
+        });
     };
 });
 
