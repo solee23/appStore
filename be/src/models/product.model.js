@@ -1,43 +1,62 @@
 const mongooes = require('mongoose');
 
 const productSchema = new mongooes.Schema({
-    name: {
-        type        : String,
-        required    : true
+    title: {
+        type: String,
+        required: true,
+        // trim: true
+    },
+    slug: {
+        type: String,
+        required: true,
+        // unique: true,
+        // lowercase: true
+    },
+    desc: {
+        type: String,
+        required: true,
+    },
+    brand: {
+        type: String,
+        required: true,
     },
     price: {
-        type        : String,
-        required    : true 
-    },
-    decription: {
-        type        : String,
-        required    : true
-    },
-    rating: {
-        type        : String,
-        required    : true,
-    },
-    avt: {
-        type        : String,
-        required    : true,
+        type: Number,
+        required: true,
     },
     category: {
-        type        : String,
-        required    : true,
+        type: mongooes.Schema.ObjectId,
+        // required: true,
     },
-    review: {
-        type        : String,
-        required    : true,
+    quantity: {
+        type: Number,
+        default: 0
     },
-    user: {
-        type        : mongooes.Schema.ObjectId,
-        ref         : "User",
-        required    : true,
+    images: {
+        type: Array,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
+    color: {
+        type: String,
+        enum: ['Black', 'Grown', 'Red']
     },
-})
+    sold: {
+        type: String,
+        required: true,
+    },
+    ratings: [
+        {
+            star: { type: Number },
+            postedBy: { type: mongooes.Types.ObjectId, ref: 'User' },
+            comment: { type: String }
+        }
+    ],
+    totalRatings: {
+        type: Number,
+        default: 0
+    },
+},
+    {
+        timestamps: true
+    })
 
 module.exports = mongooes.model("Product", productSchema)
