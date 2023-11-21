@@ -1,19 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Public, Home } from './pages/public';
 import { Routes, Route } from 'react-router-dom';
 import path from './utils/path';
-import { useAppStore } from './store/useAppStore';
-import Modal from './components/commons/Modal';
+import { getCategory } from './store/asyncAction';
+import { useDispatch } from 'react-redux';
 
 
 const App = () => {
-    const {isShowModal} = useAppStore();
+    const disPatch = useDispatch()
+    useEffect(() => {
+        disPatch(getCategory())
+    }, [])
     return (
         <div>
-            { isShowModal && <Modal/>}
             <Routes>
-                <Route path={path.PUBLIC} element={<Public/>}>
-                    <Route path={path.HOME} element={<Home/>}/>
+                <Route path={path.PUBLIC} element={<Public />}>
+                    <Route path={path.HOME} element={<Home />} />
                     {/* <Route path={path.LOGIN} element={<Login/>}/> */}
                 </Route>
             </Routes>
