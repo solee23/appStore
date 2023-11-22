@@ -43,11 +43,11 @@ const get = async (req, res) => {
 
     const allProduct = await Product.find(queryCommand);
     if (allProduct.length === 0) return res.status(400).json({
-        sucess: false,
+        success: false,
         message: 'Không có sản phẩm nào'
     })
     return res.status(200).json({
-        sucess: true,
+        success: true,
         data: allProduct
     })
 }
@@ -68,14 +68,14 @@ const getById = async (req, res) => {
 const updateById = async (req, res) => {
     const { pid } = req.params;
     const product = await Product.findById(pid);
-    if (!product) return res.status(400).json({
+    if (!product) return res.status(404).json({
         sucess: false,
-        message: 'Không tìm thấy sản phẩm'
+        message: 'Không tìm thấy sản phẩm.'
     })
     const update = await Product.findByIdAndUpdate(pid, req.body, { new: true })
     return res.status(200).json({
         sucess: true,
-        data: update ? update : 'Cập nhật không thành công'
+        data: update ? update : 'Cập nhật không thành công.'
     })
 
 }

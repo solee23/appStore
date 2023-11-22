@@ -1,7 +1,9 @@
 const express = require('express');
 const userRoute = require('./user.route');
 const productRoute = require('./product.route');
-const categoryRoute = require('./category.route')
+const categoryRoute = require('./category.route');
+const blogCategoryRoute = require('./blogCategory.route');
+const blogRoute = require('./blog.route')
 
 const router = express.Router();
 
@@ -16,7 +18,16 @@ const defaultRoutes = [{
 {
     path: '/category',
     route: categoryRoute
-}
+},
+{
+    path: '/blogcategory',
+    route: blogCategoryRoute
+},
+{
+    path: '/blog',
+    route: blogRoute
+},
+
 ];
 
 defaultRoutes.forEach((route) => {
