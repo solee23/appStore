@@ -22,6 +22,17 @@ const getAllBlog = asyncHandler(async (req, res) => {
     })
 });
 
+
+const getBlog = asyncHandler(async (req, res) => {
+
+    const {bid} = req.params
+    const blog = await Blog.findByIdAndUpdate(bid, {$inc: { numberViews: 1}}, {new: true}).populate('like', 'firstName lastName').populate('disLike',  'firstName lastName')
+    res.json({
+        success: blog ? true : false,
+        data: blog
+    })
+});
+
 const updateBlog = asyncHandler(async (req, res) => {
     const {bid} = req.params
     const blog = await Blog.findById(bid)
@@ -37,9 +48,22 @@ const updateBlog = asyncHandler(async (req, res) => {
     })
 });
 
+const deleteBlog = asyncHandler(async (req, res) => {
+    const {bid} = req.params
+    const blog = await Blog.findByIdAndDelete(bid)
+    if(!blog) return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy sản phẩm'
+    })
+    res.json({
+        success: true ? true : false,
+        message: blog ? 'Xóa thành công.' : 'Lỗi.'
+    })
+});
+
 const likeBlog = asyncHandler( async(req,res) => {
     const {_id} = req.user
-    const {bid} = req.body
+    const {bid} = req.params
     if(!bid) return res.status(404).json({
         message: 'Quên id của blog'
     })
@@ -70,7 +94,7 @@ const likeBlog = asyncHandler( async(req,res) => {
 
 const dislikeBlog = asyncHandler( async(req,res) => {
     const {_id} = req.user
-    const {bid} = req.body
+    const {bid} = req.params
     if(!bid) return res.status(404).json({
         message: 'Quên id của blog'
     })
@@ -105,5 +129,7 @@ module.exports = {
     updateBlog,
     getAllBlog,
     likeBlog,
-    dislikeBlog
+    dislikeBlog,
+    getBlog,
+    deleteBlog
 }

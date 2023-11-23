@@ -14,7 +14,7 @@ const createProduct = asyncHandler(async (req, res) => {
 
 })
 
-const get = async (req, res) => {
+const get = asyncHandler(async(req, res) => {
     const queryObj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach(el => delete queryObj[el]);
@@ -50,9 +50,9 @@ const get = async (req, res) => {
         success: true,
         data: allProduct
     })
-}
+})
 
-const getById = async (req, res) => {
+const getById = asyncHandler(async(req, res) => {
     const { pid } = req.params;
     const product = await Product.findById(pid);
     if (!product) return res.status(400).json({
@@ -64,8 +64,8 @@ const getById = async (req, res) => {
         data: product
     })
 
-}
-const updateById = async (req, res) => {
+})
+const updateById = asyncHandler(async(req, res) => {
     const { pid } = req.params;
     const product = await Product.findById(pid);
     if (!product) return res.status(404).json({
@@ -78,9 +78,9 @@ const updateById = async (req, res) => {
         data: update ? update : 'Cập nhật không thành công.'
     })
 
-}
+})
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = asyncHandler(async (req, res) => {
     const { pid } = req.params;
     const product = await Product.findByIdAndDelete(pid);
     if (!product) return res.status(400).json({
@@ -91,7 +91,12 @@ const deleteProduct = async (req, res) => {
         sucess: true,
         message: 'Xóa sản phẩm thành công'
     })
-}
+})
+
+const uploadImage = asyncHandler(async(req, res) => {
+    const upload = req.file
+    console.log('uploaded');
+})
 
 const ratings = asyncHandler(async (req, res) => {
     const { _id } = req.user;
@@ -134,5 +139,6 @@ module.exports = {
     getById,
     updateById,
     deleteProduct,
-    ratings
+    ratings,
+    uploadImage
 }

@@ -41,11 +41,10 @@ const deleteBlogCategory = asyncHandler(async (req, res) => {
         success: false,
         message: 'Không tìm thấy sản phẩm.'
     })
-    const { title } = req.body
-    const update = await BlogCategory.findByIdAndDelete(bcid)
+    const deleted = await BlogCategory.findByIdAndDelete(bcid)
     return res.status(200).json({
         sucess: true,
-        data: update ? update : 'Xoas không thành công.'
+        data: deleted ? 'Xóa không thành công.' : 'Lỗi.'
     })
 });
 

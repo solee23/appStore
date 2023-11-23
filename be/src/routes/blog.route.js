@@ -6,15 +6,17 @@ const {verifyAccessToken, isAdmin} = require('../middlewares/verifyToken');
 
 
 router.route("/").post([verifyAccessToken,isAdmin],blogController.createBlog);
-router.route("/like").post([verifyAccessToken],blogController.likeBlog);
-router.route("/dislike").post([verifyAccessToken],blogController.dislikeBlog);
+router.route("/like/:bid").post([verifyAccessToken],blogController.likeBlog);
+router.route("/dislike/:bid").post([verifyAccessToken],blogController.dislikeBlog);
 
 
 
 router.route("/get").get(blogController.getAllBlog);
+router.route("/get/:bid").get(blogController.getBlog);
+
 
 router.route("/:bid").put([verifyAccessToken,isAdmin],blogController.updateBlog);
-// router.route("/:cid").delete([verifyAccessToken,isAdmin],categoryController.deleteCategory);
+router.route("/:bid").delete([verifyAccessToken,isAdmin],blogController.deleteBlog);
 
 
 
