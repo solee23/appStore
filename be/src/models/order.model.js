@@ -13,7 +13,12 @@ const orderSchema = new mongooes.Schema({
         default: 'Đang xử lý',
         enum: ['Đang xử lý', 'Hủy', 'Thành công'] 
     },
-    paymentIntent: {
+    total: {
+        type: Number
+    },
+    coupon:{
+        type: mongooes.Types.ObjectId,
+        ref: 'Coupon'
     },
     orderby: {
         type: mongooes.Types.ObjectId,
