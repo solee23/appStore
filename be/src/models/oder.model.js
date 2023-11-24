@@ -14,7 +14,6 @@ const oderSchema = new mongooes.Schema({
         enum: ['Đang xử lý', 'Hủy', 'Thành công'] 
     },
     paymentIntent: {
-
     },
     orderby: {
         type: mongooes.Types.ObjectId,

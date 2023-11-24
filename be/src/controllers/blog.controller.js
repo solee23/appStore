@@ -123,6 +123,18 @@ const dislikeBlog = asyncHandler( async(req,res) => {
     }
 })
 
+const uploadImage = asyncHandler(async(req,res) => {
+    const {bid} = req.params
+    if(!req.file) return res.status(404).json({
+        message:'Vui lòng nhập đầy đủ.'
+    })
+    const response = await Blog.findByIdAndUpdate(bid, {image: req.file.path}, {new: true})
+    return res.status(200).json({
+        status: response ? true : false,
+        data: response ? response : 'Không thể upload ảnh.'
+    })
+})
+
 
 module.exports = {
     createBlog,
@@ -131,5 +143,6 @@ module.exports = {
     likeBlog,
     dislikeBlog,
     getBlog,
-    deleteBlog
+    deleteBlog,
+    uploadImage
 }

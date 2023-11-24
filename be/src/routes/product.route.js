@@ -14,7 +14,7 @@ router.route("/:pid").get(productController.getById);
 router.route("/:pid").put([verifyAccessToken,isAdmin],productController.updateById);
 router.route("/:pid").delete([verifyAccessToken,isAdmin],productController.deleteProduct);
 
-router.route("/:pid").put([verifyAccessToken,isAdmin], uploader.single('images'), productController.uploadImage);
+router.route("/upload/:pid").put([verifyAccessToken,isAdmin], uploader.array('images', 10), productController.uploadImage);
 
 
 
