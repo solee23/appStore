@@ -4,8 +4,8 @@ require('dotenv').config()
 // const slugify = require('slugify')
 
 const createProduct = asyncHandler(async (req, res) => {
-    // if (Object.keys(req.body).length === 0) throw new Error('Vui lòng nhập đầy đủ thông tin')
-    // if (req.body && req.body.title) req.body.slug = slugify(req.body.title)
+    if (Object.keys(req.body).length === 0) throw new Error('Vui lòng nhập đầy đủ thông tin')
+    if (req.body && req.body.title) req.body.slug = slugify(req.body.title)
     const product = await Product.create(req.body);
     return res.status(200).json({
         sucess: product ? true : false,

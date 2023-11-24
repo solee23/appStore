@@ -40,7 +40,7 @@ const productSchema = new mongooes.Schema({
         enum: ['Black', 'Grown', 'Red']
     },
     sold: {
-        type: String,
+        type: Number,
         required: true,
     },
     ratings: [
