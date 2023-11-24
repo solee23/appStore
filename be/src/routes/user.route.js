@@ -11,5 +11,8 @@ router.route("/logout").post(userControllers.logout);
 
 router.route("/forgotPassword").get(userControllers.forgotPassword);
 
+router.route("/update").put(verifyAccessToken,userControllers.updateAddress);
+
+
 
 module.exports = router;    

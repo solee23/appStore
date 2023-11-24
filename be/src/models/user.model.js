@@ -1,6 +1,7 @@
 const mongooes = require('mongoose');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const { type } = require('os');
 
 const userSchema = new mongooes.Schema({
     firstName: {
@@ -31,12 +32,10 @@ const userSchema = new mongooes.Schema({
         type        : Array,
         default     : []
     },
-    address: [
-        {
-            type    : mongooes.Types.ObjectId,
-            ref     : 'Address'
-        }
-    ],
+    address: {
+        type: Array,
+        default: []
+    },
     wishlist: [
         {
             type    : mongooes.Types.ObjectId,

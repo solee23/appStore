@@ -110,11 +110,25 @@ const forgotPassword = asyncHandler( async(req,res) => {
 
 })
 
+const updateAddress = asyncHandler(async(req,res) => {
+    const {_id} = req.user
+    if(!req.body.address) return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy'
+    })
+    const response = await User.findByIdAndUpdate(_id, {$push: {address: req.body.address}}, {new: true})
+    return res.status(200).json({
+        success: response ? true : false,
+        message: response ? response : 'Cập nhật không thành công'
+    })
+})
+
 module.exports = {
     register,
     login,
     getOne,
     refreshAccesstoken,
     logout,
-    forgotPassword
+    forgotPassword,
+    updateAddress
 }
