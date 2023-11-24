@@ -123,6 +123,40 @@ const updateAddress = asyncHandler(async(req,res) => {
     })
 })
 
+const updateCart = asyncHandler(async(req,res) => {
+    const {_id} = req.user
+    const {pid, quatity, color} = req.body
+    if(!pid || !quatity || !color) return res.status(404).json({
+        success: false,
+        message: 'Nhập đầy đủ thông tin'
+    })
+    const user = await User.findById(_id)
+    const product = user?.cart?.find(el => el.product.toString() === pid)
+    if(product){
+        if(product.color === color){
+            const response = await User.updateOne({cart: {$elemMatch: product}},{$set: {"cart.$.quatity": quatity}},{new: true})
+            return res.status(200).json({
+                success: response ? true : false,
+                message: response ? response : 'Cập nhật không thành công'
+            })
+        }else{
+            const response = await User.findByIdAndUpdate(_id, {$push: {cart: {product: pid, quatity, color}}}, {new: true})
+            return res.status(200).json({
+                success: response ? true : false,
+                message: response ? response : 'Cập nhật không thành công'
+            })
+        }
+    }else{
+        const response = await User.findByIdAndUpdate(_id, {$push: {cart: {product: pid, quatity, color}}}, {new: true})
+        return res.status(200).json({
+            success: response ? true : false,
+            message: response ? response : 'Cập nhật không thành công'
+        })
+    }
+
+})
+
+
 module.exports = {
     register,
     login,
@@ -130,5 +164,6 @@ module.exports = {
     refreshAccesstoken,
     logout,
     forgotPassword,
-    updateAddress
+    updateAddress,
+    updateCart
 }

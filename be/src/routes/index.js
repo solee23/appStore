@@ -6,6 +6,7 @@ const blogCategoryRoute = require('./blogCategory.route');
 const blogRoute = require('./blog.route');
 const brandRoute = require('./brand.route');
 const coupondRoute = require('./coupon.route');
+const orderRoute = require('./order.route')
 
 const router = express.Router();
 
@@ -36,6 +37,10 @@ const defaultRoutes = [{
 {
     path: '/coupon',
     route: coupondRoute
+},
+{
+    path: '/order',
+    route: orderRoute
 },
 
 ];

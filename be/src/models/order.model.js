@@ -1,6 +1,6 @@
 const mongooes = require('mongoose');
 
-const oderSchema = new mongooes.Schema({
+const orderSchema = new mongooes.Schema({
     product:[
         {
             product: { type: mongooes.Types.ObjectId, ref: 'Product'},
@@ -24,4 +24,4 @@ const oderSchema = new mongooes.Schema({
         timestamps: true
     })
 
-module.exports = mongooes.model("Order", oderSchema)
+module.exports = mongooes.model("Order", orderSchema)

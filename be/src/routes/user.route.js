@@ -11,7 +11,10 @@ router.route("/logout").post(userControllers.logout);
 
 router.route("/forgotPassword").get(userControllers.forgotPassword);
 
-router.route("/update").put(verifyAccessToken,userControllers.updateAddress);
+router.route("/updateAddress").put(verifyAccessToken,userControllers.updateAddress);
+
+router.route("/updateCart").put(verifyAccessToken,userControllers.updateCart);
+
 
 
 

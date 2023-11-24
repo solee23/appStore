@@ -28,10 +28,15 @@ const userSchema = new mongooes.Schema({
         type        : String,
         default     : 'user'
     },
-    cart: {
-        type        : Array,
-        default     : []
-    },
+    cart: [{
+        product: {
+            type: mongooes.Types.ObjectId,
+            ref: 'Product'
+        },
+        quatity: Number,
+        color: String,
+        
+    }],
     address: {
         type: Array,
         default: []
