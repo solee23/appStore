@@ -52,10 +52,23 @@ const Bestseller = () => {
             <Product
               key={el._id}
               productData={el}
+              pid={el.id}
               isTab={active === 1 ? false : true}
               />
           ))}
         </Slider>
+      </div>
+      <div className='w-full flex gap-4 mt-10'> 
+            <img 
+            src='https://digital-world-2.myshopify.com/cdn/shop/files/banner2-home2_2000x_crop_center.png?v=1613166657' 
+            alt=''
+            className='flex-1 object-contain'
+            />
+            <img 
+            src='https://digital-world-2.myshopify.com/cdn/shop/files/banner1-home2_2000x_crop_center.png?v=1613166657' 
+            alt=''
+            className='flex-1 object-contain'
+            />
       </div>
     </div>
   )
