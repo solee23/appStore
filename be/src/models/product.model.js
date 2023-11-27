@@ -54,6 +54,10 @@ const productSchema = new mongooes.Schema({
         type: Number,
         default: 0
     },
+    thumb: {
+        type: String,
+        require: true
+    }
 },
     {
         timestamps: true

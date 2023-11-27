@@ -1,7 +1,7 @@
 const Product = require('../models/product.model');
 const asyncHandler = require('express-async-handler');
 require('dotenv').config()
-// const slugify = require('slugify')
+const slugify = require('slugify')
 
 const createProduct = asyncHandler(async (req, res) => {
     if (Object.keys(req.body).length === 0) throw new Error('Vui lòng nhập đầy đủ thông tin')

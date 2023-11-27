@@ -12,7 +12,7 @@ const App = () => {
         disPatch(getCategory())
     }, [])
     return (
-        <div>
+        <div className='min-h-screen font-main'>
             <Routes>
                 <Route path={path.PUBLIC} element={<Public />}>
                     <Route path={path.HOME} element={<Home />} />
