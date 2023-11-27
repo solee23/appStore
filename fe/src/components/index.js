@@ -6,3 +6,5 @@ export { default as Login} from './Login';
 export { default as Bestseller} from './Bestseller';
 export { default as Product} from './Product';
 export { default as Selectoption} from './Selectoption';
+export { default as Dealdaily} from './Dealdaily';
+export { default as Countdown} from './Countdown'
