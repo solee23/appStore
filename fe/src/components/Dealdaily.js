@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import icons from '../utils/icon'
 import { getProduct } from '../apis/product'
 import { renderStarFromNumber } from '../utils/helper'
-import { fortmatMoney } from '../utils/helper'
+import { fortmatMoney, secondsToHms } from '../utils/helper'
 import { Countdown} from './'
+import moment from 'moment'
 
 
 const { FaStar, IoMdMenu } = icons
@@ -17,14 +18,21 @@ const Dealdaily = () => {
 
     const getProducts = async () => {
         const response = await getProduct({ limit: 1, page: 1/*Math.round(Math.random()*10)*/, totalRatings: 5 })
-        if (response.success) setProduct(response.data[0])
-        setHour(24)
-            setMinute(59)
-            setSecond(59)
+        if (response.success){
+            setProduct(response.data[0])
+            const today = `${moment().format('MM/DD/YYYY')} 5:00:00`
+            const seconds = new Date(today).getTime() - new Date().getTime() + 24 * 3600 * 1000
+            const number = secondsToHms(seconds)
+            setHour(number.h)
+            setMinute(number.m)
+            setSecond(number.s)
+        }else{
+            setHour(2)
+            setMinute(0)
+            setSecond(0)
+        }
     }
-    // useEffect(() => {
-    //     getProducts()
-    // }, [])
+
     useEffect(() => {
         idInterval && clearInterval(idInterval)
         getProducts()
@@ -75,7 +83,7 @@ const Dealdaily = () => {
                 </div>
                 <button
                     type='button'
-                    className='py-2 flex gap-2 items-center justify-center w-full bg-main hover:bg-gray-800 text-white font-medium'
+                    className='py-2 mb-4 flex gap-2 items-center justify-center w-full bg-main hover:bg-gray-800 text-white font-medium'
                 >
                     <IoMdMenu/>
                     <span>Options</span>
