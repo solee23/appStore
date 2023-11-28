@@ -16,7 +16,7 @@ const Home = () => {
             <div className="w-main flex">
                 <div className="flex flex-col flex-auto gap-5 w-[25%]">
                     <Sidebar />
-                    {/* <Dealdaily /> */}
+                    <Dealdaily />
                 </div>
                 <div className="flex flex-col flex-auto gap-5 w-[75%] pl-5">
                     <Banner />

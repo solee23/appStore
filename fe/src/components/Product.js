@@ -5,6 +5,8 @@ import label2 from '../assets/label2.png'
 import { renderStarFromNumber } from '../utils/helper'
 import { Selectoption } from './'
 import icons from '../utils/icon'
+import { Link } from 'react-router-dom'
+import path from '../utils/path'
 
 const { FaEye, IoMdMenu, FaHeart } = icons
 
@@ -13,7 +15,8 @@ const Product = ({ productData, isTab }) => {
   const [isShowOptions, setIsShowOptions] = useState(false)
   return (
     <div className='w-full text-base  px-[10px]'>
-      <div 
+      <Link 
+      to={`/${path.DETAILPRODUCT}/${productData?._id}/${productData?.title}`}
       className='w-full border p-[15px] flex flex-col items-center'
       onMouseEnter={e => {
         e.stopPropagation()
@@ -43,7 +46,7 @@ const Product = ({ productData, isTab }) => {
           <span className="line-clamp-1">{productData?.title}</span>
           <span>{`${fortmatMoney(productData?.price)} VNĐ`}</span>
         </div>
-      </div>
+      </Link>
     </div>
   )
 }

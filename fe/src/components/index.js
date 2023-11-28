@@ -11,6 +11,7 @@ export { default as Countdown} from './Countdown';
 export { default as Featureproduct} from './Featureproduct';
 export { default as Productcart} from './Productcart';
 export { default as Customslider} from './Customslider';
-
+export { default as Topheader} from './Topheader';
+export { default as Footer} from './Footer';
 
 
