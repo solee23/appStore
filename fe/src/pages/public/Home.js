@@ -28,7 +28,7 @@ const Home = () => {
             </div>
             <div className='my-8 w-full'>
                 <h3 className='text-[20px] font-semibold py-[15px] uppercase border-b-2 border-main'>Sản phẩm mới</h3>
-                <div className=' mt-4 mx-[-10px]'>
+                <div className=' mt-4 mx-[-10px] '>
                     <Customslider
                         products={newProduct}
                     />

@@ -37,7 +37,7 @@ const Product = ({ productData, isTab }) => {
           </div>}
           <img src={productData?.images[0] || 'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png'}
             alt=''
-            className='w-[274px] h-[274px] object-cover'
+            className='w-full h-[274px] object-cover'
           />
           <img src={isTab ? label1 : label2} alt='' className={` ${isTab ? 'w-[50px] h-[50px] top-[0px] right-[0px]' : 'w-[120px] h-[100px] top-[-29px] left-[-9px]'} absolute `} />
         </div>

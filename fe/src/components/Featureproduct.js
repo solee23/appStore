@@ -12,9 +12,9 @@ const Featureproduct = () => {
         getProducts()
     },[])
   return (
-    <div className='w-full '>
+    <div className='w-main '>
         <h3 className='text-[20px] font-semibold py-[15px] uppercase border-b-2 border-main'>Sản phẩm nổi bật</h3>
-        <div className='flex flex-wrap mt-[15px] mx-[10px]'>
+        <div className='w-full flex flex-wrap mt-[15px] mx-[10px]'>
             {products?.map(el => (
                 <Productcart
                     key={el.id}
@@ -25,7 +25,7 @@ const Featureproduct = () => {
                 />
             ))}
         </div>
-        <div className='flex justify-between'>
+        <div className='flex justify-between '>
             <img src='https://digital-world-2.myshopify.com/cdn/shop/files/banner1-bottom-home2_b96bc752-67d4-45a5-ac32-49dc691b1958_600x.jpg?v=1613166661'
                 alt=''
                 className='w-[49%] object-contain'
