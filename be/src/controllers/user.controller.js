@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { createToken, createRefreshToken } = require('../middlewares/jsonwebtoken');
 const jwt = require('jsonwebtoken');
 const sendMail = require('../utils/sendEmail');
+const { trusted } = require('mongoose');
 
 
 
@@ -10,17 +11,25 @@ const register = asyncHandler(async (req, res) => {
     const { firstName, lastName, email, password, avt } = req.body;
     if (!firstName || !lastName || !email || !password) {
         return res.status(400).json({
-            sucess: false,
+            success: false,
             mes: 'Vui lòng nhập đầy đủ thông tin...'
         })
     }
     const user = await User.findOne({ email })
-    if (user) throw new Error('Email đã tồn tại...');
-    const newUser = await User.create(req.body);
-    return res.status(200).json({
-        sucess: newUser ? true : false,
-        mes: newUser ? 'Đăng ký thành công. Vui lòng đăng nhập...' : 'Đăng ký thất bại...'
-    })
+    if(!user){
+        const newUser = await User.create(req.body);
+        return res.status(200).json({
+            success: newUser ? true : false,
+            mes: newUser ? 'Đăng ký thành công. Vui lòng đăng nhập.' : 'Đăng ký thất bại.'
+        })
+    
+    }else{
+        return res.status(401).json({
+            success: false,
+            message: 'Tài khoản email đã tồn tại.'
+        })
+    }
+
 
 });
 
@@ -28,7 +37,7 @@ const login = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
         return res.status(400).json({
-            sucess: false,
+            success: false,
             mes: 'Vui lòng nhập đầy đủ thông tin...'
         })
     }
@@ -40,6 +49,7 @@ const login = asyncHandler(async (req, res, next) => {
         await User.findByIdAndUpdate(user._id, { refreshToken: refresh });
         res.cookie('refreshToken', refresh, { httpOnly: true, age: 1 * 60 * 60 })
         res.status(200).json({
+            success: true,
             message: 'Đăng nhập thành công...',
             resData,
             token

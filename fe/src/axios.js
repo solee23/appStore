@@ -14,7 +14,7 @@ const instance = axios.create({
 instance.interceptors.response.use(function (response) {
     return response.data;
   }, function (error) {
-    return error.data;
+    return error.response.data;
   });
 
   export default instance;
