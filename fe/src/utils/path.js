@@ -8,6 +8,7 @@ const path = {
     BLOG: 'tin-tuc',
     FAQS: 'faqs',
     DETAILPRODUCT__PID__TITLE: 'san-pham/:pid/:title',
-    DETAILPRODUCT: 'san-pham'
+    DETAILPRODUCT: 'san-pham',
+    FINAL_REGISTER: 'final-register/:status'
 }
 export default path;

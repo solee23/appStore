@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Public, Home, Blog, Product, DetailProduct, Faq, Login, Service } from './pages/public';
+import { Public, Home, Blog, Product, DetailProduct, Faq, Login, Service, FinalRegister } from './pages/public';
 import { Routes, Route } from 'react-router-dom';
 import path from './utils/path';
 import { getCategory } from './store/app/asyncAction';
@@ -15,6 +15,7 @@ const App = () => {
         <div className='min-h-screen font-main'>
             <Routes>
                 <Route path={path.LOGIN} element={<Login />} />
+                <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />
                 <Route path={path.PUBLIC} element={<Public />}>
                     <Route path={path.HOME} element={<Home />} />
                     <Route path={path.PRODUCT} element={<Product />} />

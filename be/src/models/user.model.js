@@ -63,6 +63,9 @@ const userSchema = new mongooes.Schema({
     passwordResetExpires: {
         type        : String
     },
+    registerToken: {
+        type        : String
+    },
 },{
     timestamps      : true
 })
