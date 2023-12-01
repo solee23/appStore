@@ -13,7 +13,7 @@ router.route("/refreshToken").post(userControllers.refreshAccesstoken);
 router.route("/logout").post(userControllers.logout);
 
 router.route("/forgotPassword").post(userControllers.forgotPassword);
-
+router.route("/resetPassWord").put(userControllers.resetPassWord);
 
 router.route("/updateAddress").put(verifyAccessToken,userControllers.updateAddress);
 

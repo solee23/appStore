@@ -18,3 +18,9 @@ export const apiForgot = (data) => axios({
     method: 'post',
     data,
 })
+
+export const apiReset = (data) => axios({
+    url:'/user/resetPassWord',
+    method: 'put',
+    data,
+})

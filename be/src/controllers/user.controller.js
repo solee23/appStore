@@ -1,7 +1,8 @@
-const User = require('../models/user.model');
-const asyncHandler = require('express-async-handler');
-const { createToken, createRefreshToken } = require('../middlewares/jsonwebtoken');
-const jwt = require('jsonwebtoken');
+const User = require('../models/user.model')
+const asyncHandler = require('express-async-handler')
+const { createToken, createRefreshToken } = require('../middlewares/jsonwebtoken')
+const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 const sendMail = require('../utils/sendEmail')
 const makeToken = require('uniqid')
 
@@ -91,7 +92,7 @@ const login = asyncHandler(async (req, res, next) => {
     if (!email || !password) {
         return res.status(400).json({
             success: false,
-            mes: 'Vui lòng nhập đầy đủ thông tin...'
+            message: 'Vui lòng nhập đầy đủ thông tin...'
         })
     }
     const user = await User.findOne({ email });
@@ -153,9 +154,15 @@ const logout = asyncHandler(async (req, res) => {
 
 const forgotPassword = asyncHandler(async (req, res) => {
     const { email } = req.body
-    if (!email) throw Error('Không tìm thấy email...');
+    if (!email) return res.status(200).json({
+        success: false,
+        message: 'Vui lòng nhập đầy đủ.'
+    })
     const user = await User.findOne({ email });
-    if (!user) throw Error('Không tìm thấy người dùng...');
+    if (!user) return res.status(200).json({
+        success: false,
+        message: 'Không tìm thấy người dùng.'
+    })
     const resetToken = user.createPasswordChange();
     await user.save();
 
@@ -167,11 +174,34 @@ const forgotPassword = asyncHandler(async (req, res) => {
         html
     };
     await sendMail(data);
-    res.status(200).json({
+    return res.status(200).json({
         success: true,
         message: 'Thư đã gửi. Vui lòng kiểm tra hòm thư Email của bạn.'
     })
 
+})
+
+const resetPassWord = asyncHandler(async (req,res) => {
+    const {password, token} = req.body
+    if (!password || !token) return res.status(400).json({
+        success: false,
+        message: 'Vui lòng nhập đầy đủ.'
+    })
+    const passwordResetToken = crypto.createHash("sha256").update(token).digest("hex");
+    const user = await User.findOne({passwordResetToken,passwordResetExpires: {$gt: Date.now()}})
+    if (!user) return res.status(400).json({
+        success: false,
+        message: 'Thời gian xác nhận đã hết hạn.'
+    })
+    user.password = password
+    user.passwordResetToken = undefined
+    user.passwordChangedAt = Date.now()
+    user.passwordResetExpires = undefined
+    await user.save()
+    return res.status(200).json({
+        success: user ? true : false,
+        message: user ? 'Cập nhật mật khẩu thành công.' : 'Thời gian xác nhận đã hết hạn.'
+    })
 })
 
 const updateAddress = asyncHandler(async (req, res) => {
@@ -230,5 +260,6 @@ module.exports = {
     forgotPassword,
     updateAddress,
     updateCart,
-    finalRegister
+    finalRegister,
+    resetPassWord
 }

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { InputFiels, Button } from '../../components'
 import { apiLogin, apiRegister, apiForgot } from '../../apis'
 import Swal from 'sweetalert2'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import path from '../../utils/path'
 import { regiser } from '../../store/user/userSlice'
 import { useDispatch } from 'react-redux'
@@ -23,7 +23,6 @@ const Login = () => {
 		})
 	}
 	const [register, setRegister] = useState(false)
-	const [isForgotPasswod, setIsForgotPasswod] = useState('')
 	const [isShow, setisShow] = useState(false)
 	const [email, setEmail] = useState(null)
 	const navigate = useNavigate()
@@ -62,12 +61,12 @@ const Login = () => {
 				disPatch(regiser({ isLoggin: true, token: rs.token, resData: rs.resData }))
 				navigate(`/${path.HOME}`)
 			} else {
-				// Swal.fire({
-				// 	title: 'Thất bại.',
-				// 	text: rs.message,
-				// 	icon: 'error',
-				// 	confirmButtonText: 'Như con cặc.'
-				//   })
+				Swal.fire({
+					title: 'Thất bại.',
+					text: rs.message,
+					icon: 'error',
+					confirmButtonText: 'Như con cặc.'
+				  })
 			}
 		}
 	}, [payload, register])
@@ -91,10 +90,6 @@ const Login = () => {
 				text: response.message,
 				icon: 'error',
 				confirmButtonText: 'Như con cặc.'
-			}).then((isConfirmed) => {
-				if (isConfirmed) {
-					setisShow(false)
-				}
 			})
 		}
 	}
@@ -111,7 +106,12 @@ const Login = () => {
 						value={email}
 						onChange={e => setEmail(e.target.value)}
 					/>
-					<div className='w-full flex items-center justify-end'>
+					<div className='w-full flex items-center justify-end gap-4'>
+						<Button
+							name='Trở về'
+							handleOnClick={() => setisShow(false)}
+							style='px-4 py-2 rounded-md text-white bg-main text-semibold my-2'
+						/>
 						<Button
 							name='Gửi'
 							handleOnClick={handleForgotPassword}
