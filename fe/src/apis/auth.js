@@ -9,5 +9,12 @@ export const apiLogin = (data) => axios({
 export const apiRegister = (data) => axios({
     url:'/user/register',
     method: 'post',
-    data
+    data,
+    withCredentials: true
+})
+
+export const apiForgot = (data) => axios({
+    url:'/user/forgotPassword',
+    method: 'post',
+    data,
 })

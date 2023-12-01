@@ -1,7 +1,6 @@
 const mongooes = require('mongoose');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const { type } = require('os');
 
 const userSchema = new mongooes.Schema({
     firstName: {
@@ -80,8 +79,8 @@ userSchema.methods = {
         return await bcrypt.compare(password,this.password);
     },
     createPasswordChange: function(){
-        const resetToken = crypto.randomBytes(32).toString('hex');
-        this.passwordResetToken = crypto.createHash('sh256').update(resetToken).digest('hex');
+        const resetToken = crypto.randomBytes(20).toString("hex");
+        this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
         this.passwordResetExpires = Date.now() + 15 *60 *1000;
         return resetToken;
     }

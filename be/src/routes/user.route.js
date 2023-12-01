@@ -12,7 +12,8 @@ router.route("/get").get(verifyAccessToken,userControllers.getOne);
 router.route("/refreshToken").post(userControllers.refreshAccesstoken);
 router.route("/logout").post(userControllers.logout);
 
-router.route("/forgotPassword").get(userControllers.forgotPassword);
+router.route("/forgotPassword").post(userControllers.forgotPassword);
+
 
 router.route("/updateAddress").put(verifyAccessToken,userControllers.updateAddress);
 

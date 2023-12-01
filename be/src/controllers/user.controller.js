@@ -44,7 +44,12 @@ const register = asyncHandler(async (req, res) => {
         const token = makeToken()
         res.cookie('dataRegister', { ...req.body, token }, { httpOnly: true, maxAge: 15 * 60 * 1000 })
         const html = `Xác nhận email của bạn. <a href=${process.env.URL_SERVER}/api/v1/user/final-register/${token}>Nhấn vào đây.</a>`;
-        await sendMail({ email, html, subject: 'Xác nhận tài khoản' })
+        const data = {
+            email,
+            subject: 'Xác nhận tài khoản',
+            html
+        }
+        await sendMail(data)
         res.status(200).json({
             success: true,
             message: 'Thư đã gửi.'
@@ -62,13 +67,17 @@ const register = asyncHandler(async (req, res) => {
 const finalRegister = asyncHandler(async (req, res) => {
     const cookie = req.cookies
     const { token } = req.params
-    if (!cookie || cookie?.dataRegister?.token !== token) return res.redirect(`${process.env.CLIENT_URL}/final-register/failed`)
+    if (!cookie || cookie?.dataRegister?.token !== token){
+        res.clearCookie('dataRegister')
+        return res.redirect(`${process.env.CLIENT_URL}/final-register/failed`)
+    }
     const newUser = await User.create({
         firstName: cookie?.dataRegister?.firstName,
         lastName: cookie?.dataRegister?.lastName,
         email: cookie?.dataRegister?.email,
         password: cookie?.dataRegister?.password,
     });
+    res.clearCookie('dataRegister')
     if(newUser) return res.redirect(`${process.env.CLIENT_URL}/final-register/success`)
     else return res.redirect(`${process.env.CLIENT_URL}/final-register/failed`)
     // return res.status(200).json({
@@ -143,24 +152,24 @@ const logout = asyncHandler(async (req, res) => {
 })
 
 const forgotPassword = asyncHandler(async (req, res) => {
-    const email = req.query;
+    const { email } = req.body
     if (!email) throw Error('Không tìm thấy email...');
     const user = await User.findOne({ email });
     if (!user) throw Error('Không tìm thấy người dùng...');
     const resetToken = user.createPasswordChange();
     await user.save();
 
-    const html = `<a href=${process.env.URL_SERVER}/api/v1/user/reset-password/${resetToken}>Link sẽ hết hạn trong 15p đó nhé....</a>`;
+    const html = `<a href=${process.env.CLIENT_URL}/reset-password/${resetToken}>Link sẽ hết hạn trong 15p đó nhé....</a>`;
 
     const data = {
-        to: email,
+        email,
         subject: 'Lấy lại mật khẩu',
         html
     };
-    const rs = await sendMail(data);
+    await sendMail(data);
     res.status(200).json({
-        sucess: true,
-        rs
+        success: true,
+        message: 'Thư đã gửi. Vui lòng kiểm tra hòm thư Email của bạn.'
     })
 
 })

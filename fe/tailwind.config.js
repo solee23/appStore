@@ -9,7 +9,8 @@ module.exports = {
     },
     extend: {
       width: {
-        main: '1220px'
+        main: '1220px',
+        overlay: 'rgba(0,0,0,0.7)'
       },
       backgroundColor: {
         main: '#ee3131'

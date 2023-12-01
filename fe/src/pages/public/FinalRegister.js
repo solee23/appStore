@@ -7,7 +7,7 @@ const FinalRegister = () => {
   const {status} = useParams()
   const navigate = useNavigate()
   useEffect(() => {
-    if(status ==='failed'){
+    if(status ==='success'){
       Swal.fire({
         icon: 'success',
         title: 'Thành công.',
@@ -16,7 +16,7 @@ const FinalRegister = () => {
         confirmButtonText: 'Đăng nhập.'
         }).then((isConfirmed) => {
         if(isConfirmed){
-          navigate(`/${path.HOME}`)
+          navigate(`/${path.LOGIN}`)
         }
         })
     }else{
