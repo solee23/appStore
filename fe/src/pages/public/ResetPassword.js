@@ -11,7 +11,6 @@ const ResetPassword = () => {
   const [password, setPassword] = useState('')
   const {token} = useParams()
   const navigate = useNavigate()
-  console.log(token);
   const handdleResetPassword = async() => {
     const response = await apiReset({password,token})
     if (response.success) {

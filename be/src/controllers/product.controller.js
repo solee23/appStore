@@ -122,7 +122,6 @@ const ratings = asyncHandler(async (req, res) => {
         const respone = await Product.findByIdAndUpdate(pid, {
             $push: { ratings: { star, comment, postedBy: _id } }
         }, { new: true })
-        console.log(respone);
     }
 
     const updatedProduct = await Product.findById(pid);

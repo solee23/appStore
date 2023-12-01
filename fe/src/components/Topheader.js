@@ -11,7 +11,6 @@ const {IoIosLogOut} = icons
 const Topheader = () => {
   const disPatch = useDispatch()
   const {isLoggin, userDetail} = useSelector(state => state.user)
-  console.log(userDetail);
   useEffect(() => {
     if(isLoggin)
     disPatch(getUser())

@@ -27,7 +27,6 @@ const updateBrand = asyncHandler(async (req, res) => {
     })
     const  title  = req.body;
     const update = await Brand.findByIdAndUpdate(brid, title, { new: true })
-    console.log(update);
     return res.status(200).json({
         sucess: true,
         data: update ? update : 'Cập nhật không thành công.'

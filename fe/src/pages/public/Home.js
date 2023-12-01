@@ -8,9 +8,6 @@ const { IoMdArrowDropright } = icons
 const Home = () => {
     const { newProduct } = useSelector(state => state.products)
     const { category } = useSelector(state => state.app)
-
-    console.log(category);
-
     return (
         <>
             <div className="w-main flex">
