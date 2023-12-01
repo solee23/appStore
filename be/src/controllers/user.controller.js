@@ -120,7 +120,7 @@ const getOne = asyncHandler(async (req, res) => {
     const user = await User.findById(_id).select('-refreshToken -password -role');
     if (user) {
         res.status(200).json({
-            message: 'Thông tin của người dùng...',
+            success: true,
             data: user
         });
     }

@@ -2,7 +2,7 @@ import { BsFillTelephoneInboundFill, BsFillBagCheckFill } from 'react-icons/bs';
 import { MdEmail } from 'react-icons/md';
 import { RiAccountCircleFill } from 'react-icons/ri'
 import { FaStar, FaRegStar, FaStarHalfAlt, FaEye, FaHeart } from "react-icons/fa";
-import { IoMdMenu, IoMdArrowDropright } from "react-icons/io";
+import { IoMdMenu, IoMdArrowDropright, IoIosLogOut } from "react-icons/io";
 
 
 
@@ -20,7 +20,8 @@ const icons = {
     FaEye,
     IoMdMenu,
     FaHeart,
-    IoMdArrowDropright
+    IoMdArrowDropright,
+    IoIosLogOut
 
     
 };

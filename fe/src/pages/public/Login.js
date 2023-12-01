@@ -2,9 +2,9 @@ import React, { useState, useCallback } from 'react'
 import { InputFiels, Button } from '../../components'
 import { apiLogin, apiRegister, apiForgot } from '../../apis'
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import path from '../../utils/path'
-import { regiser } from '../../store/user/userSlice'
+import { logIn } from '../../store/user/userSlice'
 import { useDispatch } from 'react-redux'
 
 const Login = () => {
@@ -58,7 +58,7 @@ const Login = () => {
 		} else {
 			const rs = await apiLogin(login)
 			if (rs.success) {
-				disPatch(regiser({ isLoggin: true, token: rs.token, resData: rs.resData }))
+				disPatch(logIn({ isLoggin: true, token: rs.token, resData: rs.resData }))
 				navigate(`/${path.HOME}`)
 			} else {
 				Swal.fire({
@@ -69,7 +69,7 @@ const Login = () => {
 				  })
 			}
 		}
-	}, [payload, register])
+	}, [payload, logIn])
 	const handleForgotPassword = async() => {
 		const response = await apiForgot({email})
 		if(response.success){
@@ -170,6 +170,7 @@ const Login = () => {
 						{!register && <span className='text-gray-700 hover:underline cursor-pointer' onClick={() => setRegister(true)}>Tạo tài khoản</span>}
 						{register && <span className='text-gray-700 hover:underline cursor-pointer w-full text-right' onClick={() => setRegister(false)}>Đăng nhập</span>}
 					</div>
+					<Link className='hover:underline uppercase font-bold' to={`/${path.HOME}`}>Trang chủ</Link>
 				</div>
 			</div>
 		</div >

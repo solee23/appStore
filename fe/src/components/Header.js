@@ -26,11 +26,11 @@ const Header = () => {
             </span>
             <span >Online Support 24/7</span>
         </div>
-        <div className="flex items-center justify-center gap-2 px-6 border-r">
+        <div className="flex items-center cursor-pointer justify-center gap-2 px-6 border-r">
             <BsFillBagCheckFill color="red" size={26}/>
             <span>0 items</span>
         </div>
-        <div className="flex items-center justify-center gap-2 px-6" >
+        <div className="flex items-center cursor-pointer justify-center gap-2 px-6" >
            <RiAccountCircleFill color="red" size={26}/>
         </div>
       </div>

@@ -34,7 +34,6 @@ const FinalRegister = () => {
   },[])
   return (
     <div>
-      
     </div>
   )
 }
