@@ -16,7 +16,7 @@ const Product = ({ productData, isTab }) => {
   return (
     <div className='w-full text-base  px-[10px]'>
       <Link 
-      to={`/${path.DETAILPRODUCT}/${productData?._id}/${productData?.title}`}
+      to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${productData?.title}`}
       className='w-full border p-[15px] flex flex-col items-center'
       onMouseEnter={e => {
         e.stopPropagation()

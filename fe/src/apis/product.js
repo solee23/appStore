@@ -5,3 +5,8 @@ export const getProduct = (params) => axios({
     method: 'get',
     params
 })
+
+export const getDetail= (pid) => axios({
+    url:'/product/' + pid,
+    method: 'get',
+})

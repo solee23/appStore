@@ -5,12 +5,20 @@ import icons from '../../utils/icon'
 
 const { IoMdArrowDropright } = icons
 
+var setting = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1
+  };
+
 const Home = () => {
     const { newProduct } = useSelector(state => state.products)
     const { category } = useSelector(state => state.app)
     return (
         <>
-            <div className="w-main flex">
+            <div className="w-main flex mt-6">
                 <div className="flex flex-col flex-auto gap-5 w-[25%]">
                     <Sidebar />
                     <Dealdaily />
@@ -28,6 +36,7 @@ const Home = () => {
                 <div className=' mt-4 mx-[-10px] '>
                     <Customslider
                         products={newProduct}
+                        settings={setting}
                     />
                 </div>
                 <div className=' my-8 w-full'>

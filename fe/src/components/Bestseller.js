@@ -10,6 +10,14 @@ const tab = [
   { id: 2, name: 'Những sản phẩm mới' },
 ]
 
+var setting = {
+  dots: true,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 1
+};
+
 
 const Bestseller = () => {
   const disPatch = useDispatch()
@@ -44,7 +52,11 @@ const Bestseller = () => {
         ))}
       </div>
       <div className='mt-4 mx-[-10px]'>
-        <Customslider products={products} active={active}/>
+        <Customslider 
+        products={products} 
+        active={active}
+        settings={setting}
+        />
       </div>
       <div className='w-full flex gap-4 mt-10'> 
             <img 

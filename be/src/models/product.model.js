@@ -26,7 +26,7 @@ const productSchema = new mongooes.Schema({
     },
     category: {
         type: mongooes.Schema.ObjectId,
-        // required: true,
+        ref: 'Category'
     },
     quantity: {
         type: Number,
