@@ -7,7 +7,7 @@ import { Product } from './'
 const Customslider = ({ products, active, settings }) => {
     return (
         <>
-            {products && <Slider {...settings}>
+            {products && <Slider className='custom-slider' {...settings}>
                 {products?.map(el => (
                     <Product
                         key={el._id}
