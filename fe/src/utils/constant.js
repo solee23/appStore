@@ -127,3 +127,12 @@ export const Infor = [
         content: ''
     }
 ]
+
+export const colors = [
+        'black',
+        'red',
+        'white',
+        'brown',
+        'yellow',
+        
+]

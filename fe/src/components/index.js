@@ -18,4 +18,5 @@ export { default as Breadcrumb} from './Breadcrumb';
 export { default as Selectquatity} from './Selectquatity';
 export { default as Extrainfor} from './Extrainfor';
 export { default as Productinfo} from './Productinfo';
+export { default as Searchitem} from './Searchitem';
 
