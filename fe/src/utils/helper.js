@@ -24,3 +24,5 @@ export function secondsToHms(d) {
     const s = Math.floor(d % 3600 % 60)
     return ({ h,m,s})
 }
+
+export const fotmatPrice = number => Math.round(number / 1000 ) * 1000

@@ -15,6 +15,7 @@ export { default as Footer} from './Footer';
 export { default as InputFiels} from './InputFiels';
 export { default as Button} from './Button';
 export { default as Breadcrumb} from './Breadcrumb';
-
-
+export { default as Selectquatity} from './Selectquatity';
+export { default as Extrainfor} from './Extrainfor';
+export { default as Productinfo} from './Productinfo';
 
